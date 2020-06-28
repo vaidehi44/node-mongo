@@ -3,25 +3,38 @@ const Dishes =  require('./models/dishes');
 
 const url = 'mongodb://localhost:27017/Confusion';
 
-const connect = mongoose.connect(url);
+const connect = mongoose.connect(url,{ useFindAndModify: false});
 
 connect.then((db) => {
     console.log('Connected successfully.');
 
-    var newDish = Dishes({
+    Dishes.create({
         name:'Puranpoli',
         description:'tasty'
-    });
-    newDish.save()
-        .then((dish) => {
-            console.log('Saved the dish:\n',dish);
+    })
+    .then((dish) => {
+            console.log('Created the dish:\n',dish);
 
-            return Dishes.find({});
-        }).then((dishes) => {
-            console.log('Found:\n',dishes);
+            return Dishes.findByIdAndUpdate(dish._id,{
+                $set:{descripion:'Updated test'}
+            },
+            {
+                new : true
+            }
+            ).exec();
+    })
+    .then((dish1) => {
+            console.log('Updated the dish as:\n',dish1);
 
-            return mongoose.connection.close();
-        }).catch((err) => {
+            return Dishes.find({}).exec();
+    })
+    .then((dishes) => {
+        console.log('Found the dishes:\n',dishes);
+        return Dishes.remove({});
+    }).then(()=>{
+        return mongoose.connection.close();
+    })
+    .catch((err) => {
             console.log(err);
         })
 }).catch((err) => console.log(err));
