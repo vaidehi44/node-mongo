@@ -8,9 +8,13 @@ const commentSchema = new Schema({
         max:5,
         min:0
     },
-    comments:{
+    comment:{
         type: String,
         required: true
+    },
+    author : {
+        type:String,
+        required:true
     }
 },
     {

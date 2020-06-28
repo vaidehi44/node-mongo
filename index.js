@@ -16,7 +16,7 @@ connect.then((db) => {
             console.log('Created the dish:\n',dish);
 
             return Dishes.findByIdAndUpdate(dish._id,{
-                $set:{descripion:'Updated test'}
+                $set:{description:'Updated test'}
             },
             {
                 new : true
@@ -24,6 +24,7 @@ connect.then((db) => {
             ).exec();
     })
     .then((dish1) => {
+      
             console.log('Updated the dish as:\n',dish1);
 
             return Dishes.find({}).exec();
