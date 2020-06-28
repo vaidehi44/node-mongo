@@ -19,15 +19,25 @@ connect.then((db) => {
                 $set:{description:'Updated test'}
             },
             {
-                new : true
+                new : true         
             }
             ).exec();
     })
-    .then((dish1) => {
+    .then((dish) => {
       
-            console.log('Updated the dish as:\n',dish1);
+            console.log('Updated the dish as:\n',dish);
 
-            return Dishes.find({}).exec();
+            dish.comments.push({
+                rating : 5,
+                comment: 'Great',
+                author:'ME'
+            })
+            return dish.save()
+
+    })
+    .then((dish) => {
+        console.log('Added the comments:\n',dish);
+        return Dishes.find({}).exec();
     })
     .then((dishes) => {
         console.log('Found the dishes:\n',dishes);
